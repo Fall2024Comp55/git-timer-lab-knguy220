@@ -3,11 +3,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-
 import javax.swing.Timer;
-
 import acm.graphics.GLabel;
-import acm.graphics.GObject;
 import acm.graphics.GOval;
 import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
@@ -19,6 +16,7 @@ public class DodgeBall extends GraphicsProgram implements ActionListener {
 	private GLabel text;
 	private Timer movement;
 	private RandomGenerator rgen;
+	private int numTimes = 0;
 	
 	public static final int SIZE = 25;
 	public static final int SPEED = 2;
@@ -41,7 +39,13 @@ public class DodgeBall extends GraphicsProgram implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		moveAllBallsOnce();
+		numTimes++;
+		
+		if (numTimes % 40 == 0) {
+            addAnEnemy();
+        }
+        
+        moveAllBallsOnce();
 	}
 	
 	public void mousePressed(MouseEvent e) {
@@ -85,6 +89,7 @@ public class DodgeBall extends GraphicsProgram implements ActionListener {
 			ball.move(SPEED, 0);
 		}
 	}
+	
 	
 	public void init() {
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
