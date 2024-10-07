@@ -7,6 +7,7 @@ import javax.swing.Timer;
 import acm.graphics.GLabel;
 import acm.graphics.GOval;
 import acm.graphics.GRect;
+import acm.graphics.GObject;
 import acm.program.GraphicsProgram;
 import acm.util.RandomGenerator;
 
@@ -46,6 +47,7 @@ public class DodgeBall extends GraphicsProgram implements ActionListener {
         }
         
         moveAllBallsOnce();
+        moveAllEnemiesOnce();
 	}
 	
 	public void mousePressed(MouseEvent e) {
@@ -85,10 +87,28 @@ public class DodgeBall extends GraphicsProgram implements ActionListener {
 	}
 
 	private void moveAllBallsOnce() {
-		for(GOval ball:balls) {
-			ball.move(SPEED, 0);
-		}
-	}
+        for (GOval ball : balls) {
+
+            double collisionX = ball.getX() + ball.getWidth() + 1;
+            double collisionY = ball.getY() + ball.getHeight() / 2;
+            GObject obj = getElementAt(collisionX, collisionY);
+            
+            if (obj instanceof GRect) {
+                remove(obj);
+                enemies.remove(obj);
+                continue; 
+            }
+            
+            ball.move(SPEED, 0);
+        }
+    }
+	
+	private void moveAllEnemiesOnce() {
+        for (GRect enemy : enemies) {
+            int randomMove = rgen.nextInt(-SPEED, SPEED); 
+            enemy.move(0, randomMove);
+        }
+    }
 	
 	
 	public void init() {
